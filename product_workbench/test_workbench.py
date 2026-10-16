@@ -35,7 +35,7 @@ class WorkbenchTests(unittest.TestCase):
         self.assertEqual(official_host("https://example.com.evil.test/"), "example.com.evil.test")
         self.assertEqual(official_host("https://github.com/example/project"), "")
         self.assertEqual(official_host("https://unrelated.readme.io/"), "")
-        self.assertEqual(official_host("https://user:password@example.com/"), "")
+        self.assertEqual(official_host("https://example-user@example.com/"), "")
 
     def test_history_requires_comparable_chronological_captures(self):
         first = snapshot("https://example.com/", "first body", "2026-10-15T00:00:00Z")
