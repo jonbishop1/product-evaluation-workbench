@@ -37,6 +37,9 @@ class WorkbenchTests(unittest.TestCase):
         with self.assertRaises(ValueError): compare(second, first)
         with self.assertRaises(ValueError): compare(first, {**second, "source": "https://other.test/"})
         with self.assertRaises(ValueError): snapshot("https://example.com", "", "2026-10-16")
+        with self.assertRaises(ValueError): snapshot("https://example.com", "body", "2026-10-16")
+        # Compare actual instants, not lexicographic order across timezones.
+        with self.assertRaises(ValueError): compare({**first, "captured_at": "2026-10-16T01:00:00-07:00"}, {**second, "captured_at": "2026-10-16T07:00:00Z"})
 
 
 if __name__ == "__main__": unittest.main()
