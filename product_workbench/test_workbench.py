@@ -1,5 +1,5 @@
 import unittest
-from .costs import estimate
+from .costs import estimate, best_volume_tier
 from .evidence import assess_task, official_host
 from .history import snapshot, compare
 
@@ -22,6 +22,13 @@ class WorkbenchTests(unittest.TestCase):
         with self.assertRaises(ValueError): assess_task([dict(state="executed", evidence="It worked.")])
         with self.assertRaises(ValueError): assess_task([dict(state="observed", evidence="")])
         self.assertTrue(assess_task([dict(state="executed", evidence="Expected fixture output matches.", output_verified=True)])["execution_verified"])
+
+    def test_volume_tier_can_cost_less_than_starting_plan_overage(self):
+        plan = dict(base="30", included=20000, overage_per_1000="2", rounding="bucket", tiers=[dict(base="30", included=20000), dict(base="45", included=40000)])
+        result = best_volume_tier(plan, 35000)
+        self.assertEqual(str(result["total"]), "45")
+        self.assertEqual(result["included"], 40000)
+        self.assertEqual(plan["included"], 20000)
 
     def test_domain_identity_is_not_substring_or_shared_host_matching(self):
         self.assertEqual(official_host("https://docs.example.com/path"), "example.com")

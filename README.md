@@ -21,7 +21,7 @@ result = estimate(plan, monthly_units=22001, peak_daily_units=1000)
 assert str(result["total"]) == "34.50"
 ```
 
-The cost model checks monthly and daily allowances and supports whole-bucket or proportional overage. Choose the rounding policy only when documented or explicitly label it as an assumption. It does not choose the cheapest provider, infer plan compatibility or model omitted taxes and add-ons.
+The cost model checks monthly and daily allowances and supports whole-bucket or proportional overage. `best_volume_tier` compares supplied volume tiers within one edition; it does not assume that different editions have the same capabilities. Choose the rounding policy only when documented or explicitly label it as an assumption. It does not choose the cheapest provider, infer plan compatibility or model omitted taxes and add-ons.
 
 ## Keep evidence states separate
 

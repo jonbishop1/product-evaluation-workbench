@@ -21,3 +21,16 @@ def estimate(plan, monthly_units, peak_daily_units=0):
     overage = units * Decimal(plan.get("overage_per_1000") or "0")
     base = Decimal(plan["base"])
     return {"available": True, "base": base, "overage": overage, "total": base + overage, "excess": excess}
+
+
+def best_volume_tier(plan, monthly_units, peak_daily_units=0):
+    """Choose among supplied volume tiers of the same edition, not providers."""
+    candidates = []
+    for tier in plan.get("tiers", [{}]):
+        variant = {**plan, **tier}
+        result = estimate(variant, monthly_units, peak_daily_units)
+        if result["available"]:
+            candidates.append({**result, "included": variant["included"]})
+    if not candidates:
+        return estimate(plan, monthly_units, peak_daily_units)
+    return min(candidates, key=lambda r: (r["total"], -r["included"]))
