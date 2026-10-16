@@ -22,6 +22,7 @@ class WorkbenchTests(unittest.TestCase):
         with self.assertRaises(ValueError): assess_task([dict(state="executed", evidence="It worked.")])
         with self.assertRaises(ValueError): assess_task([dict(state="observed", evidence="")])
         self.assertTrue(assess_task([dict(state="executed", evidence="Expected fixture output matches.", output_verified=True)])["execution_verified"])
+        self.assertFalse(assess_task([dict(state="executed", evidence="One output matches.", output_verified=True), dict(state="unknown", evidence="The required recovery task has not run.")])["execution_verified"])
 
     def test_volume_tier_can_cost_less_than_starting_plan_overage(self):
         plan = dict(base="30", included=20000, overage_per_1000="2", rounding="bucket", tiers=[dict(base="30", included=20000), dict(base="45", included=40000)])

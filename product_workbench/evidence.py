@@ -41,4 +41,5 @@ def assess_task(steps):
         if state == "executed" and not step.get("output_verified"):
             raise ValueError("Execution requires a verified output.")
         outcomes.append({**step, "state": state})
-    return {"steps": outcomes, "execution_verified": any(s["state"] == "executed" for s in outcomes)}
+    required = [s for s in outcomes if s.get("required", True)]
+    return {"steps": outcomes, "execution_verified": bool(required) and all(s["state"] == "executed" for s in required)}

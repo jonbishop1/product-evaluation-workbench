@@ -35,7 +35,7 @@ result = assess_task([
 assert result["execution_verified"] is False
 ```
 
-Positive observations need evidence. An executed step additionally needs a verified output. Documentation retrieval, file presence and product execution are separate findings. These tools do not generate an agent-readiness score or certify a product.
+Positive observations need evidence. An executed step additionally needs a verified output. Task-level execution is verified only when every required step has executed with verified output; one successful step cannot complete an unfinished task. Documentation retrieval, file presence and product execution are separate findings. These tools do not generate an agent-readiness score or certify a product.
 
 ## Compare source captures
 
